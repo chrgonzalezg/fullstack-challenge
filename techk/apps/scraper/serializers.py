@@ -10,4 +10,4 @@ class CategoriesSerializer(serializers.ModelSerializer):
 class BooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Books
-        fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "fk_c_id_category")
+        fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "fk_c_id")
