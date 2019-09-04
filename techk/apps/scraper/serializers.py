@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .models import Books, Categories
+from .models import Categories, Books
 
 
-class CategoriesSerializer(serializers.ModelSerializer):
+class CategoriesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categories
         fields = ("c_id", "c_name")
 
-class BooksSerializer(serializers.ModelSerializer):
+class BooksSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Books
-        fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "fk_c_id")
+        fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "categories")

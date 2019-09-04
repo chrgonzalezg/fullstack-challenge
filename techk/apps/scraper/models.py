@@ -8,6 +8,7 @@ from django.db import models
 class Categories(models.Model):
     c_id = models.IntegerField(primary_key=True)
     c_name = models.CharField(max_length=45)
+    
 
 class Books(models.Model):    
     b_id = models.IntegerField(primary_key=True)    
@@ -17,4 +18,4 @@ class Books(models.Model):
     b_stock = models.BooleanField()
     b_product_descripcion = models.TextField()
     b_upc = models.CharField(max_length=30)
-    fk_c_id_category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    categories = models.ForeignKey(Categories, on_delete=models.CASCADE)
