@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from apps.base.views import index
+from apps.scraper.views import fetchCategory
 from django.conf.urls import url, include
 
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    #url(r'', index),
+    url(r'^fetch/categories', fetchCategory),
     #url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^api/', include('apps.scraper.urls'))
 ]
