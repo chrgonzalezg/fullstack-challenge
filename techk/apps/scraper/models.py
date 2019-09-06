@@ -12,10 +12,10 @@ class Categories(models.Model):
 
 class Books(models.Model):    
     b_id = models.IntegerField(primary_key=True)    
-    b_title = models.CharField(max_length=80)
+    b_title = models.CharField(max_length=125)
     b_thumbnail = models.CharField(max_length=125)
-    b_price = models.CharField(max_length=20)
-    b_stock = models.BooleanField()
+    b_price = models.FloatField()
+    b_stock = models.IntegerField()
     b_product_descripcion = models.TextField()
-    b_upc = models.CharField(max_length=30)
+    b_upc = models.CharField(max_length=16)
     categories = models.ForeignKey(Categories, on_delete=models.CASCADE)
