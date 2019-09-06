@@ -95,6 +95,17 @@
                     console.log(err);
                     })
                 },
+            deleteBook: function(id) {
+            this.loading = true;
+            this.$http.delete(`/api/books/${id}/` )
+                .then((response) => {
+                    this.loading = false;
+                    this.getBooks();
+                })
+                .catch((err) => {
+                    this.loading = false;
+                })
+            }
         }
     });
 
