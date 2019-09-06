@@ -9,6 +9,8 @@ import re
 from django.db import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.utils.html import escape
+from django_filters import rest_framework as filters
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 # Create your views here.
 
@@ -16,8 +18,12 @@ URL_TO_SCRAP = 'http://books.toscrape.com/'
 soup = BeautifulSoup(requests.get(URL_TO_SCRAP).text, 'html.parser')
 
 class ListBooksView(viewsets.ModelViewSet):
+    __basic_fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "categories")
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
+    filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_fields = __basic_fields
+    search_fields = __basic_fields
 
 
 class ListCategoriesView(viewsets.ModelViewSet):
