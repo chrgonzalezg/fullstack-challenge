@@ -44,15 +44,21 @@
 
   <div id="app" class="row">
   <div class="col-sm-4">
-      <select class="form-control" id="exampleFormControlSelect1">
+      <select class="form-control" id="exampleFormControlSelect1" v-model="search_term" v-on:change.prevent="getBooks()">
+      <option value="">--ALL CATEGORIES--</option>
       <option v-for="category in categories" :value="category.c_id">${category.c_name}</option>
     </select>
   </div>
   <div class="col-sm-4"><a class="btn btn-primary btn-nueva" href="d"><b>+</b> Fetch Data <b>+</b></a></div>
+
+
+   
+
+
   </div>
 
 
-          
+                   
 
   
 
@@ -139,6 +145,7 @@
             currentBook: {},
             message: null,
             newBook: { 'category_heading': null, 'category_body': null },
+            search_term: '',
         },
         mounted: function() {
             this.getCategories();
@@ -155,7 +162,10 @@
                     this.loading = false;
                     console.log(err);
                     })
-                },          
+                },
+            getBooks: function(){
+              b.getBooks()
+            }
         }
     });
 
@@ -174,8 +184,13 @@
         },
         methods: {
             getBooks: function() {
+
+              let api_url = '/api/books/categories=2';
+              if(c.search_term!==''||c.search_term!==null) {
+                api_url = `/api/books/?categories=${c.search_term}`
+              }
                 this.loading = true;
-                this.$http.get('/api/books/')
+                this.$http.get(api_url)
                     .then((response) => {
                         this.books = response.data;
                         this.loading = false;
