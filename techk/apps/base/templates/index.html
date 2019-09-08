@@ -89,10 +89,11 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Image</th>
         <th>Title</th>
         <th>Price</th>
         <th>Stock</th>
-        <th>Action</th>
+        <th>Action</th>        
       </tr>
     </thead>
     <tbody>
@@ -101,10 +102,11 @@
 
       <tr v-for="book in books">
         <td>${book.b_id}</td>
+        <td><img width="140" v-bind:src="`${book.b_thumbnail}`"></td>
         <td>${book.b_title}</td>
         <td>&euro;${book.b_price}</td>
         <td>${book.b_stock}</td>
-        <td><button class="btn btn-danger" v-on:click="deleteBook(book.b_id)">Delete</button></td>
+        <td><button class="btn btn-danger" v-on:click="deleteBook(book.b_id)">Delete</button></td>        
       </tr>
 
           </tbody>
