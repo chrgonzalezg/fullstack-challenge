@@ -14,9 +14,12 @@ from multiprocessing import Pool
 
 # Create your views here.
 
+#MAIN URL FOR DE SCRAP SITE
 URL_TO_SCRAP = 'http://books.toscrape.com/'
+#BS - EXTRACT FORMATION FROM MAIN URL
 soup = BeautifulSoup(requests.get(URL_TO_SCRAP).text, 'html.parser')
 
+#MODELVIEW SET FOR BOOK MODEL
 class ListBooksView(viewsets.ModelViewSet):
     __basic_fields = ("b_id", "b_title", "b_thumbnail", "b_price", "b_stock", "b_product_descripcion", "b_upc", "categories")
     queryset = Books.objects.all()
@@ -25,12 +28,12 @@ class ListBooksView(viewsets.ModelViewSet):
     filter_fields = __basic_fields
     search_fields = __basic_fields
 
-
+#MODELVIEW SET FOR CATEGORY MODEL
 class ListCategoriesView(viewsets.ModelViewSet):
     queryset = Categories.objects.all()
     serializer_class = CategoriesSerializer
 
-
+#FUNCTION FOR SCRAP AND SAVE IN DB THE CATEGORIES FROM EXTERNAL SITE
 def fetchCategory(request):    
     categoriesAdded = 0
     for a in soup.select("li a"):
@@ -44,7 +47,7 @@ def fetchCategory(request):
     return JsonResponse({'status': str(categoriesAdded)+" categories has added"}, status=200)
 
 
-
+#FUNCTION FOR GENERATE ALL URL PAGINATIONS
 def generateUrls():
     totalPages = int((re.findall('\d+', soup.find("li", { "class" : "current" }).text ))[1])
     all_urls = list()
@@ -53,9 +56,9 @@ def generateUrls():
         all_urls.append(soup_books)
     return all_urls
 
+#FUNCTION FOR SCRAPE EACH URL AND SAVE ALL BOOK OF PAGE IN THE DB
 def scrape(url):
     soup_books = BeautifulSoup(requests.get(url, timeout=10).text, 'html.parser')
-    #soup_books = BeautifulSoup(requests.get(URL_TO_SCRAP+"catalogue/category/books_1/page-1.html").text, 'html.parser')        
     booksOfPages = [i.text for i in soup_books.findAll('article', {'class': 'product_pod'})]        
     for booksOfPages in soup_books.select("article div a"):
         urlBook = URL_TO_SCRAP+"catalogue/"+booksOfPages['href'][6:]
@@ -77,6 +80,7 @@ def scrape(url):
         except IntegrityError as e:
             continue
 
+#FUNCTION FOR RUN "def scrape(url)" IN PARALLEL
 def fetchBooks(request):
     try:
         p = Pool(50)
