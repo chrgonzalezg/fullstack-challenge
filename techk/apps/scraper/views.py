@@ -7,8 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from django.db import IntegrityError
-from django.http import HttpResponse, JsonResponse
-from django.utils.html import escape
+from django.http import JsonResponse
 from django_filters import rest_framework as filters
 from rest_framework.filters import SearchFilter, OrderingFilter
 from multiprocessing import Pool

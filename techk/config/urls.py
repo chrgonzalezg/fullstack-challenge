@@ -14,8 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib import admin
-from apps.base.views import index
 from apps.scraper.views import fetchCategory, fetchBooks
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
