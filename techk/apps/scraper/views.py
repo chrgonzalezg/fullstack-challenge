@@ -54,13 +54,13 @@ def generateUrls():
     return all_urls
 
 def scrape(url):
-    soup_books = BeautifulSoup(requests.get(url).text, 'html.parser')
+    soup_books = BeautifulSoup(requests.get(url, timeout=10).text, 'html.parser')
     #soup_books = BeautifulSoup(requests.get(URL_TO_SCRAP+"catalogue/category/books_1/page-1.html").text, 'html.parser')        
     booksOfPages = [i.text for i in soup_books.findAll('article', {'class': 'product_pod'})]        
     for booksOfPages in soup_books.select("article div a"):
         urlBook = URL_TO_SCRAP+"catalogue/"+booksOfPages['href'][6:]
         print(urlBook)
-        soupBook = BeautifulSoup(requests.get(urlBook).text, 'html.parser')
+        soupBook = BeautifulSoup(requests.get(urlBook, timeout=10).text, 'html.parser')
         desc = soupBook.find('p', {'class' : False})
         data_dict = {                
             "b_id": int(re.search(r'(\d+)\D+$', urlBook).group(1)),
@@ -84,5 +84,5 @@ def fetchBooks(request):
         p.terminate()
         p.join()
     except requests.exceptions.ConnectionError as e:
-        return JsonResponse({'status': 'Connection error, try again to fetch'}, status=200)                   
+        return JsonResponse({'status': 'Connection error with external site, please try again to fetch'}, status=200)                   
     return JsonResponse({'status': 'The books have been added correctly'}, status=200)
