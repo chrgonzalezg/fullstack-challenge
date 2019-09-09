@@ -36,6 +36,8 @@
 
 <div class="container">
 
+
+
   <div class="title-box">
     <h1>List of Books</h1>
     <p class="lead">In this page, you can retrieve information from: <a href="http://books.toscrape.com/" target="_blank">http://books.toscrape.com/</a></p>
@@ -48,6 +50,10 @@
       <option value="">--ALL CATEGORIES--</option>
       <option v-for="category in categories" :value="category.c_id">${category.c_name}</option>
     </select>
+
+
+    
+
   </div>
   <div class="col-sm-4"><a class="btn btn-primary btn-nueva" href="d"><b>+</b> Fetch Data <b>+</b></a></div>
 
@@ -88,11 +94,13 @@
             <table class="table table-bordered grocery-crud-table table-hover">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>#</th>
         <th>Image</th>
         <th>Title</th>
         <th>Price</th>
         <th>Stock</th>
+        <th>UPC</th>
+        <th>Description</th>
         <th>Action</th>        
       </tr>
     </thead>
@@ -106,6 +114,8 @@
         <td>${book.b_title}</td>
         <td>&euro;${book.b_price}</td>
         <td>${book.b_stock}</td>
+        <td>${book.b_upc}</td>
+        <td><textarea disabled rows="8">${book.b_product_descripcion}</textarea></td>
         <td><button class="btn btn-danger" v-on:click="deleteBook(book.b_id)">Delete</button></td>        
       </tr>
 
