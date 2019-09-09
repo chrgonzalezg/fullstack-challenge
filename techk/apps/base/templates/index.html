@@ -162,107 +162,12 @@
 
 
  
- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.5/vue-resource.min.js"></script>
 
  <script type="text/javascript">
 
-
-    c = new Vue({
-        el: '#app',
-        delimiters: ['${','}'],
-        data: {
-            categories: [],
-            loading: false,
-            currentBook: {},
-            message: null,
-            newBook: { 'category_heading': null, 'category_body': null },
-            search_term: '',
-        },
-        mounted: function() {
-            this.getCategories();
-        },
-        methods: {
-            getCategories: function() {
-                this.loading = true;
-                this.$http.get('/api/categories/')
-                    .then((response) => {
-                        this.categories = response.data;
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                    })
-                },
-            getBooks: function(){
-              b.getBooks();
-            },
-            fetchCategories: function(){              
-                b.loading = true;                
-                this.$http.get('/fetch/categories/')
-                    .then((response) => {
-                        this.getCategories();
-                        this.$http.get('/fetch/books/')
-                        .then((response) => {
-                            this.getBooks();                        
-                            $("#modalMessage .modal-body").text(response.data.status);
-                            $('#modalMessage').modal({backdrop: 'static', keyboard: false})
-                            b.loading = false;                 
-                        });
-                    })
-                    .catch((err) => {
-                    b.loading = false;
-                    console.log(err);
-                    })
-            }
-        }
-    });
-
-    b = new Vue({
-        el: '#starting',
-        delimiters: ['${','}'],
-        data: {
-            books: [],
-            loading: false,
-            currentBook: {},
-            message: null,
-            newBook: { 'book_heading': null, 'book_body': null },
-        },
-        mounted: function() {
-            this.getBooks();
-        },
-        methods: {
-            getBooks: function() {
-
-              let api_url = '/api/books/categories=2';
-              if(c.search_term!==''||c.search_term!==null) {
-                api_url = `/api/books/?categories=${c.search_term}`
-              }
-                this.loading = true;
-                this.$http.get(api_url)
-                    .then((response) => {
-                        this.books = response.data;
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                    })
-                },
-            deleteBook: function(id) {
-            this.loading = true;
-            this.$http.delete(`/api/books/${id}/` )
-                .then((response) => {
-                    this.loading = false;
-                    this.getBooks();
-                })
-                .catch((err) => {
-                    this.loading = false;
-                })
-            }
-        }
-    });
+c=new Vue({el:"#app",delimiters:["${","}"],data:{categories:[],loading:!1,currentBook:{},message:null,newBook:{category_heading:null,category_body:null},search_term:""},mounted:function(){this.getCategories()},methods:{getCategories:function(){this.loading=!0,this.$http.get("/api/categories/").then(t=>{this.categories=t.data,this.loading=!1}).catch(t=>{this.loading=!1,console.log(t)})},getBooks:function(){b.getBooks()},fetchCategories:function(){b.loading=!0,this.$http.get("/fetch/categories/").then(t=>{this.getCategories(),this.$http.get("/fetch/books/").then(t=>{this.getBooks(),$("#modalMessage .modal-body").text(t.data.status),$("#modalMessage").modal({backdrop:"static",keyboard:!1}),b.loading=!1})}).catch(t=>{b.loading=!1,console.log(t)})}}}),b=new Vue({el:"#starting",delimiters:["${","}"],data:{books:[],loading:!1,currentBook:{},message:null,newBook:{book_heading:null,book_body:null}},mounted:function(){this.getBooks()},methods:{getBooks:function(){let t="/api/books/";""===c.search_term&&null===c.search_term||(t=`/api/books/?categories=${c.search_term}`),this.loading=!0,this.$http.get(t).then(t=>{this.books=t.data,this.loading=!1}).catch(t=>{this.loading=!1,console.log(t)})},deleteBook:function(t){this.loading=!0,this.$http.delete(`/api/books/${t}/`).then(t=>{this.loading=!1,this.getBooks()}).catch(t=>{this.loading=!1})}}});
 
  </script>
 

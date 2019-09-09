@@ -15,14 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from apps.scraper.views import fetchCategory, fetchBooks
-from django.conf.urls import url, include
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
     url(r'^fetch/categories', fetchCategory),
     url(r'^fetch/books', fetchBooks),
-    #url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^api/', include('apps.scraper.urls')),
     url(r'^', TemplateView.as_view(template_name='index.html'))
 ]
