@@ -139,7 +139,7 @@
 
 
 
-<div id="myModal" class="modal" tabindex="-1" role="dialog">
+<div id="modalMessage" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -197,19 +197,20 @@
                     })
                 },
             getBooks: function(){
-              b.getBooks()
+              b.getBooks();
             },
-            fetchCategories: function(){
-              
-              
+            fetchCategories: function(){              
                 b.loading = true;                
                 this.$http.get('/fetch/categories/')
-                    .then((response) => {                                   
+                    .then((response) => {
                         this.getCategories();
-                        $("#myModal .modal-body").text(response.data.status);
-                        $('#myModal').modal({backdrop: 'static', keyboard: false})
-                        //$('#myModal').modal('hide')
-                        b.loading = false;                        
+                        this.$http.get('/fetch/books/')
+                        .then((response) => {
+                            this.getBooks();                        
+                            $("#modalMessage .modal-body").text(response.data.status);
+                            $('#modalMessage').modal({backdrop: 'static', keyboard: false})
+                            b.loading = false;                 
+                        });
                     })
                     .catch((err) => {
                     b.loading = false;
