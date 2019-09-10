@@ -39,7 +39,7 @@
 
 
   <div class="title-box">
-    {% comment %} <h1>List of Books</h1> {% endcomment %}
+    <h1>List of Books</h1>
     <p class="lead">In this page, you can retrieve information from: <a href="http://books.toscrape.com/" target="_blank">http://books.toscrape.com/</a></p>
   </div>
 
@@ -174,112 +174,7 @@
 
 
 
-c = new Vue({
-        el: '#app',
-        delimiters: ['${','}'],
-        data: {
-            categories: [],
-            loading: false,
-            currentBook: {},
-            message: null,
-            newBook: { 'category_heading': null, 'category_body': null },
-            search_term: '',
-        },
-        mounted: function() {
-            this.getCategories();
-        },
-        methods: {
-            getCategories: function() {
-                this.loading = true;
-                this.$http.get('/api/categories/')
-                    .then((response) => {
-                        this.categories = response.data;
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                    })
-                },
-            getBooks: function(){
-              b.getBooks();
-            },
-            fetchCategories: function(){              
-                b.loading = true;                
-                this.$http.get('/fetch/categories/')
-                    .then((response) => {
-                        this.getCategories();
-                        this.$http.get('/fetch/books/')
-                        .then((response) => {
-                            this.getBooks();                        
-                            $("#modalMessage .modal-body").text(response.data.status);
-                            $('#modalMessage').modal({backdrop: 'static', keyboard: false})
-                            b.loading = false;                 
-                        });
-                    })
-                    .catch((err) => {
-                    b.loading = false;
-                    console.log(err);
-                    })
-            }
-        }
-    });
-
-    b = new Vue({
-        el: '#starting',
-        delimiters: ['${','}'],
-        data: {
-            books: [],
-            loading: false,
-            currentBook: {},
-            message: null,
-            newBook: { 'book_heading': null, 'book_body': null },
-        },
-        mounted: function() {
-            this.getBooks();
-        },
-        methods: {
-            getBooks: function() {
-
-              let api_url = '/api/books/';
-              if(c.search_term!==''||c.search_term!==null) {
-                api_url = `/api/books/?categories=${c.search_term}`
-              }
-                $('#tblBooks').hide();                
-                this.loading = true;
-                this.$http.get(api_url)
-                    .then((response) => {
-                        this.books = response.data;
-                        
-                        setTimeout(function(){
-                          
-                          $('#tblBooks').show();
-                          $('#tblBooks').DataTable();
-                          b.loading = false;
-                          if ( ! $('#tblBooks').DataTable().data().count() ) {
-                              $('#tblBooks').DataTable().destroy();
-                          }
-                        }, 250);
-                    })
-                    .catch((err) => {
-                    this.loading = false;
-                    console.log(err);
-                    })                    
-                },
-            deleteBook: function(id) {
-              $('#example').parents('div.dataTables_wrapper').first().hide();
-            this.loading = true;
-            this.$http.delete(`/api/books/${id}/` )
-                .then((response) => {
-                    this.loading = false;
-                    this.getBooks();
-                })
-                .catch((err) => {
-                    this.loading = false;
-                })
-            }
-        }
-    });
+c=new Vue({el:"#app",delimiters:["${","}"],data:{categories:[],loading:!1,currentBook:{},message:null,newBook:{category_heading:null,category_body:null},search_term:""},mounted:function(){this.getCategories()},methods:{getCategories:function(){this.loading=!0,this.$http.get("/api/categories/").then(t=>{this.categories=t.data,this.loading=!1}).catch(t=>{this.loading=!1,console.log(t)})},getBooks:function(){b.getBooks()},fetchCategories:function(){b.loading=!0,this.$http.get("/fetch/categories/").then(t=>{this.getCategories(),this.$http.get("/fetch/books/").then(t=>{this.getBooks(),$("#modalMessage .modal-body").text(t.data.status),$("#modalMessage").modal({backdrop:"static",keyboard:!1}),b.loading=!1})}).catch(t=>{b.loading=!1,console.log(t)})}}}),b=new Vue({el:"#starting",delimiters:["${","}"],data:{books:[],loading:!1,currentBook:{},message:null,newBook:{book_heading:null,book_body:null}},mounted:function(){this.getBooks()},methods:{getBooks:function(){$("#tblBooks").DataTable().destroy();let t="/api/books/";""===c.search_term&&null===c.search_term||(t=`/api/books/?categories=${c.search_term}`),$("#tblBooks").hide(),this.loading=!0,this.$http.get(t).then(t=>{this.books=t.data,setTimeout(function(){$("#tblBooks").show(),$("#tblBooks").DataTable(),b.loading=!1,$("#tblBooks").DataTable().data().count()||$("#tblBooks").DataTable().destroy()},250)}).catch(t=>{this.loading=!1,console.log(t)})},deleteBook:function(t){$("#example").parents("div.dataTables_wrapper").first().hide(),this.loading=!0,this.$http.delete(`/api/books/${t}/`).then(t=>{this.loading=!1,this.getBooks()}).catch(t=>{this.loading=!1})}}});
 
  </script>
 
